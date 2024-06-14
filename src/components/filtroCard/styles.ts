@@ -1,9 +1,10 @@
 import styled from 'styled-components'
-import { Props } from './index'
 
-type PropsOmissor = Omit<Props, 'contador' | 'legenda'>
+type Props = {
+  ativo?: boolean
+}
 
-export const Card = styled.div<PropsOmissor>`
+export const Card = styled.div<Props>`
   padding: 8px;
   border: 1px solid ${(props) => (props.ativo ? '#1e90ff' : '#a1a1a1')};
   background-color: #fcfcfc;

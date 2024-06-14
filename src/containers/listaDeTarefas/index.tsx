@@ -1,49 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Tarefa } from '../../components/tarefa'
 import * as S from './styles'
-import * as enums from '../../utils/enums/Tarefa'
-
-const tarefas = [
-  {
-    titulo: 'Estudar typescript',
-    descricao: 'Ver a aula 30 da EBAC',
-    prioridade: enums.Prioridade.IMPORTANTE,
-    status: enums.Status.PENDENTE
-  },
-  {
-    titulo: 'Estudar Javascript',
-    descricao: 'Ver a aula 10 da EBAC',
-    prioridade: enums.Prioridade.IMPORTANTE,
-    status: enums.Status.PENDENTE
-  },
-  {
-    titulo: 'Pagar conta',
-    descricao: 'Conta de 100 reais',
-    prioridade: enums.Prioridade.URGENTE,
-    status: enums.Status.PENDENTE
-  },
-  {
-    titulo: 'Ir ao mercado',
-    descricao: 'Comprar café',
-    prioridade: enums.Prioridade.NORMAL,
-    status: enums.Status.CONCLUIDA
-  },
-  {
-    titulo: 'Responder Mamãe',
-    descricao: 'Se irei para Curitiba',
-    prioridade: enums.Prioridade.IMPORTANTE,
-    status: enums.Status.PENDENTE
-  }
-]
+import { useSelector } from 'react-redux'
+import { RootReducer } from '../../store'
 
 export default function ListaDeTarefas() {
+  const { itens } = useSelector((state: RootReducer) => state.tarefas)
+  const { termo, criterio, valor } = useSelector(
+    (state: RootReducer) => state.filtro
+  )
+
+  const filtraTarefas = () => {
+    let tarefasFiltradas = itens
+    if (termo !== undefined) {
+      tarefasFiltradas = tarefasFiltradas.filter(
+        (item) => item.titulo.toLowerCase().search(termo.toLowerCase()) >= 0
+      )
+      if (criterio === 'prioridade') {
+        tarefasFiltradas = tarefasFiltradas.filter(
+          (item) => item.prioridade === valor
+        )
+      }
+      if (criterio === 'status') {
+        tarefasFiltradas = tarefasFiltradas.filter(
+          (item) => item.status === valor
+        )
+      }
+      return tarefasFiltradas
+    } else {
+      return itens
+    }
+  }
+
   return (
     <main>
       <S.Container>
+        <p>
+          Tarefas marcadas como: &quot;{criterio}
+          &quot; e &quot;{termo}
+          &quot;
+        </p>
         <ul>
-          {tarefas.map((tarefa) => (
+          {filtraTarefas().map((tarefa) => (
             <li key={tarefa.titulo}>
               <Tarefa
+                id={tarefa.id}
                 titulo={tarefa.titulo}
                 descricao={tarefa.descricao}
                 prioridade={tarefa.prioridade}
