@@ -1,4 +1,3 @@
-import React from 'react'
 import FiltroCard from '../../components/filtroCard'
 import * as S from './styles'
 import { useDispatch, useSelector } from 'react-redux'

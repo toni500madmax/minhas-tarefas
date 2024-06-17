@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { Tarefa } from '../../components/tarefa'
 import * as S from './styles'
 import { useSelector } from 'react-redux'
@@ -32,16 +31,22 @@ export default function ListaDeTarefas() {
     }
   }
 
+  const tarefasFiltradas = filtraTarefas()
+
   return (
     <main>
       <S.Container>
-        <p>
-          Tarefas marcadas como: &quot;{criterio}
-          &quot; e &quot;{termo}
-          &quot;
-        </p>
+        <S.Resultado>
+          {tarefasFiltradas.length > 1
+            ? `${tarefasFiltradas.length} tarefas marcadas `
+            : `${tarefasFiltradas.length} tarefa marcada `}
+          como: &quot;
+          {`${criterio}${valor === undefined ? '' : ` = ${valor}`}`}
+          &quot;{' '}
+          {termo !== undefined && termo.length > 0 ? ` e "${termo}"` : ``}
+        </S.Resultado>
         <ul>
-          {filtraTarefas().map((tarefa) => (
+          {tarefasFiltradas.map((tarefa) => (
             <li key={tarefa.titulo}>
               <Tarefa
                 id={tarefa.id}

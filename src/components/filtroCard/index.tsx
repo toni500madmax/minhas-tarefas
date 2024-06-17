@@ -1,4 +1,3 @@
-import React from 'react'
 import * as S from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { alteraFiltro } from '../../store/reducers/filtro'
