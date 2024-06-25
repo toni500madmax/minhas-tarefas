@@ -1,7 +1,7 @@
 import { Tarefa } from '../../components/tarefa'
-import * as S from './styles'
 import { useSelector } from 'react-redux'
 import { RootReducer } from '../../store'
+import { MainContainer, Titulo } from '../../styles'
 
 export default function ListaDeTarefas() {
   const { itens } = useSelector((state: RootReducer) => state.tarefas)
@@ -35,8 +35,8 @@ export default function ListaDeTarefas() {
 
   return (
     <main>
-      <S.Container>
-        <S.Resultado>
+      <MainContainer>
+        <Titulo as="p">
           {tarefasFiltradas.length > 1
             ? `${tarefasFiltradas.length} tarefas marcadas `
             : `${tarefasFiltradas.length} tarefa marcada `}
@@ -44,7 +44,7 @@ export default function ListaDeTarefas() {
           {`${criterio}${valor === undefined ? '' : ` = ${valor}`}`}
           &quot;{' '}
           {termo !== undefined && termo.length > 0 ? ` e "${termo}"` : ``}
-        </S.Resultado>
+        </Titulo>
         <ul>
           {tarefasFiltradas.map((tarefa) => (
             <li key={tarefa.titulo}>
@@ -58,7 +58,7 @@ export default function ListaDeTarefas() {
             </li>
           ))}
         </ul>
-      </S.Container>
+      </MainContainer>
     </main>
   )
 }

@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import * as S from './styles'
-import { editar, remover } from '../../store/reducers/tarefas'
+import { alteraStatus, editar, remover } from '../../store/reducers/tarefas'
 import TarefaClass from '../../models/Tarefa'
+import { Button, SaveButton } from '../../styles'
+import * as enums from '../../utils/enums/Tarefa'
 
 export type Props = TarefaClass
 
@@ -41,9 +43,29 @@ export const Tarefa = ({
     setEdit(false)
   }
 
+  const alteraStatusTarefa = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      alteraStatus({
+        id,
+        finalizado: event.target.checked
+      })
+    )
+  }
+
   return (
     <S.Card>
-      <S.Title>{titulo}</S.Title>
+      <label htmlFor={titulo}>
+        <input
+          type="checkbox"
+          id={titulo}
+          checked={status === enums.Status.CONCLUIDA}
+          onChange={alteraStatusTarefa}
+        />
+        <S.Title>
+          {edit && <em>Editando: </em>}
+          {titulo}
+        </S.Title>
+      </label>
       <S.Tag parametro={'prioridade'} prioridade={prioridade}>
         {prioridade}
       </S.Tag>
@@ -58,14 +80,14 @@ export const Tarefa = ({
       <S.BarraAcoes>
         {edit ? (
           <>
-            <S.SaveButton onClick={salvarEdicao}>Salvar</S.SaveButton>
+            <SaveButton onClick={salvarEdicao}>Salvar</SaveButton>
             <S.NegativeButton onClick={cancelarEdicao}>
               Cancelar
             </S.NegativeButton>
           </>
         ) : (
           <>
-            <S.Button onClick={() => setEdit(true)}>Editar</S.Button>
+            <Button onClick={() => setEdit(true)}>Editar</Button>
             <S.NegativeButton onClick={() => dispatch(remover(id))}>
               Remover
             </S.NegativeButton>
